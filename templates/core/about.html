@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}Biz haqimizda{% endblock %}
+
+
+
+{% block content %}
+
+<section class="page-hero page-hero--about page-hero--sub page-hero--overlap">
+  <div class="container">
+    <nav class="breadcrumb page-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'core:home' %}">Bosh sahifa</a><span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__current">Biz haqimizda</span>
+    </nav>
+    <div class="page-hero__row">
+    <div class="page-hero__content">
+      <h1 class="page-hero__title">Biz haqimizda</h1>
+
+      <div class="page-hero__accent"></div>
+
+      <p class="page-hero__subtitle">BUKHARA HAMD PRINT — Buxoro ilm-fan va madaniyat markazida 20 yildan ortiq tajribaga ega nashriyot. Ilm, ma'rifat va madaniyatni keng ommaga yetkazish — bizning asosiy maqsadimiz.</p>
+
+    </div>
+
+    <div class="page-hero__media">
+
+      {% include 'partials/page_hero_image.html' %}
+
+    </div>
+
+    </div>
+  </div>
+
+</section>
+
+
+
+<section class="about-page">
+
+  <div class="container">
+
+    <div class="about-main-card">
+
+      <div class="about-intro">
+
+        <div class="about-intro__text">
+
+          <h2 class="about-section-title">Nashriyotimiz haqida</h2>
+
+          <p>BUKHARA HAMD PRINT nashriyoti Buxoro shahrida faoliyat yuritib, diniy, ilmiy, tarbiyaviy va madaniy asarlarni nashr etish bilan shug'ullanadi. Har bir kitob professional tahrir, dizayn va bosma sifati bilan tayyorlanadi.</p>
+
+          <p>O'quvchilar kitoblarni bepul onlayn o'qish va yuklab olish imkoniyatiga ega. Bizning maqsadimiz — sifatli kontentni keng ommaga yetkazish va ilm-fan hamda madaniyatni targ'ib qilish.</p>
+
+        </div>
+
+        <div class="about-features">
+
+          <div class="about-feature">
+
+            <div class="about-feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+
+            <div><h3>Sifat</h3><p>Har bir nashr professional tahrir, dizayn va bosma sifati bilan tayyorlanadi</p></div>
+
+          </div>
+
+          <div class="about-feature">
+
+            <div class="about-feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+
+            <div><h3>Maqsad</h3><p>Ilm, ma'rifat va madaniyatni keng ommaga yetkazish</p></div>
+
+          </div>
+
+          <div class="about-feature">
+
+            <div class="about-feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+
+            <div><h3>Jamoa</h3><p>Tajribali mutaxassislar va hamkor mualliflar jamoasi</p></div>
+
+          </div>
+
+          <div class="about-feature">
+
+            <div class="about-feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+
+            <div><h3>Ishonch</h3><p>20 yillik tajriba va minglab mamnun o'quvchilar</p></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="about-stats-bar">
+
+      <div class="about-stat">
+
+        <div class="about-stat__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+
+        <div>
+
+          <div class="about-stat__number" data-target="500">500+</div>
+
+          <div class="about-stat__label">Nashr etilgan kitoblar</div>
+
+        </div>
+
+      </div>
+
+      <div class="about-stat">
+
+        <div class="about-stat__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+
+        <div>
+
+          <div class="about-stat__number" data-target="20">20+</div>
+
+          <div class="about-stat__label">Tajribali mutaxassislar</div>
+
+        </div>
+
+      </div>
+
+      <div class="about-stat">
+
+        <div class="about-stat__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+
+        <div>
+
+          <div class="about-stat__number" data-target="100">100+</div>
+
+          <div class="about-stat__label">Hamkor mualliflar</div>
+
+        </div>
+
+      </div>
+
+      <div class="about-stat">
+
+        <div class="about-stat__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+
+        <div>
+
+          <div class="about-stat__number" data-target="50000">50 000+</div>
+
+          <div class="about-stat__label">Kitobxonlar</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="about-values-row">
+
+      <div class="about-values">
+
+        <h2 class="about-section-title">Bizning qadriyatlarimiz</h2>
+
+        <div class="values-tags">
+
+          <span class="value-tag"><span class="value-tag__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span> Halollik</span>
+
+          <span class="value-tag"><span class="value-tag__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span> Sifat</span>
+
+          <span class="value-tag"><span class="value-tag__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span> Mas'uliyat</span>
+
+          <span class="value-tag"><span class="value-tag__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span> Innovatsiya</span>
+
+          <span class="value-tag"><span class="value-tag__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span> O'quvchi manfaati</span>
+
+        </div>
+
+      </div>
+
+      <div class="quote-box">
+
+        <div class="quote-box__mark">"</div>
+
+        <p class="quote-box__text">Kitob — insoniyat tafakkurining eng buyuk mo'jizasi. Biz har bir nashr orqali bilim va ma'rifatni keng ommaga yetkazishga intilamiz.</p>
+
+        <div class="quote-box__author">— BUKHARA HAMD PRINT</div>
+
+        <svg class="quote-box__leaf" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M60 10C40 30 20 50 30 80C35 95 50 100 60 90C70 100 85 95 90 80C100 50 80 30 60 10Z" stroke="currentColor" stroke-width="1.5" fill="currentColor" opacity=".12"/></svg>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<script>
+
+const aboutStats = document.querySelectorAll('.about-stat__number');
+
+let aboutStatsDone = false;
+
+function animateAboutStats() {
+
+  if (aboutStatsDone || !aboutStats.length) return;
+
+  const bar = document.querySelector('.about-stats-bar');
+
+  if (!bar) return;
+
+  const rect = bar.getBoundingClientRect();
+
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+
+    aboutStatsDone = true;
+
+    aboutStats.forEach(el => {
+
+      const target = parseInt(el.dataset.target);
+
+      const suffix = el.textContent.includes('+') ? '+' : '';
+
+      const isLarge = target >= 1000;
+
+      const duration = 2000;
+
+      const start = performance.now();
+
+      function update(now) {
+
+        const progress = Math.min((now - start) / duration, 1);
+
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        const current = Math.floor(eased * target);
+
+        el.textContent = isLarge ? current.toLocaleString('uz-UZ') + suffix : current + suffix;
+
+        if (progress < 1) requestAnimationFrame(update);
+
+      }
+
+      requestAnimationFrame(update);
+
+    });
+
+  }
+
+}
+
+window.addEventListener('scroll', animateAboutStats);
+
+animateAboutStats();
+
+</script>
+
+{% endblock %}
+

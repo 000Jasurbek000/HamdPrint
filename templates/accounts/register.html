@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Ro'yxatdan o'tish{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+  <div class="auth-card">
+    <h1>Ro'yxatdan o'tish</h1>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<span class="form-error">{{ field.errors.0 }}</span>{% endif %}
+        {% if field.help_text %}<small class="form-help">{{ field.help_text }}</small>{% endif %}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn--gold" style="width:100%">Ro'yxatdan o'tish</button>
+    </form>
+    <p class="auth-link">Hisobingiz bormi? <a href="{% url 'accounts:login' %}">Kiring</a></p>
+  </div>
+</section>
+{% endblock %}

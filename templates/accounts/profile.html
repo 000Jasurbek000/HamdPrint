@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--compact">
+  <div class="container">
+    <h1 class="page-hero__title">Profil</h1>
+    <p class="page-hero__subtitle">Xush kelibsiz, {{ user.username }}!</p>
+  </div>
+</section>
+
+<section class="page-content">
+  <div class="container">
+    <div class="profile-card">
+      <p><strong>Foydalanuvchi:</strong> {{ user.username }}</p>
+      <p><strong>Email:</strong> {{ user.email|default:"Kiritilmagan" }}</p>
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+        <a href="{% url 'catalog:book_list' %}" class="btn btn--gold">Kitoblar katalogi</a>
+        <a href="{% url 'accounts:logout' %}" class="btn btn--outline-dark">Chiqish</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

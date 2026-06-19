@@ -1,0 +1,27 @@
+<div class="sidebar-widget">
+  <h3>{{ title }}</h3>
+  <ul class="sidebar-books sidebar-books--boxed{% if media_items %} sidebar-books--media{% endif %}">
+    {% for item in items %}
+    <li>
+      <a href="{{ item.get_absolute_url }}" class="sidebar-books__link">
+        <img src="{% if item.cover_url %}{{ item.cover_url }}{% else %}{{ item.image_url }}{% endif %}" alt="{{ item.title }}" loading="lazy">
+        <div>
+          <strong>{{ item.title }}</strong>
+          <small>
+            {% if item.cover_url %}
+              {{ item.download_count|floatformat:0 }} marta yuklab olingan · {{ item.file_format }} {{ item.file_size }}
+            {% elif item.author_name %}
+              {{ item.author_name }} · {{ item.published_at|date:"d M Y" }}
+            {% else %}
+              {{ item.category_display }} · {{ item.published_at|date:"d M Y" }}
+            {% endif %}
+          </small>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if list_url %}
+  <a href="{{ list_url }}" class="section-link" style="margin-top:12px;display:inline-block">{{ list_link_text|default:"Barchasini ko'rish →" }}</a>
+  {% endif %}
+</div>

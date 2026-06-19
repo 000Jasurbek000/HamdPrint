@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Qidiruv{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--about page-hero--sub">
+  <div class="container">
+    <nav class="breadcrumb page-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'core:home' %}">Bosh sahifa</a><span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__current">Qidiruv</span>
+    </nav>
+    <div class="page-hero__row">
+    <div class="page-hero__content">
+    <h1 class="page-hero__title">Qidiruv</h1>
+    <div class="page-hero__accent"></div>
+    <p class="page-hero__subtitle">Kerakli ma'lumotni topish uchun qidiruvdan foydalaning</p>
+    </div>
+    <div class="page-hero__media">
+      {% include 'partials/page_hero_image.html' %}
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="search-main">
+  <div class="container">
+    <form class="search-bar-large" method="get" action="{% url 'core:search' %}">
+      <input type="text" name="q" value="{{ query }}" placeholder="Kitob, maqola yoki yangilik qidiring..." class="search-bar-large__input" autofocus>
+      <button type="submit" class="search-bar-large__btn">Qidirish</button>
+      {% if active_category %}<input type="hidden" name="kategoriya" value="{{ active_category }}">{% endif %}
+      {% if active_author %}<input type="hidden" name="muallif" value="{{ active_author }}">{% endif %}
+      {% if tab != 'all' %}<input type="hidden" name="tab" value="{{ tab }}">{% endif %}
+    </form>
+
+    {% if query %}
+    <div class="search-layout">
+      <aside class="search-filters">
+        <div class="search-filters__card">
+          <h3>Kategoriya</h3>
+          <form method="get" id="filterForm">
+            <input type="hidden" name="q" value="{{ query }}">
+            {% if tab != 'all' %}<input type="hidden" name="tab" value="{{ tab }}">{% endif %}
+            <ul class="search-filters__list">
+              <li>
+                <label class="search-filter-check">
+                  <input type="radio" name="kategoriya" value="" {% if not active_category %}checked{% endif %} onchange="this.form.submit()">
+                  <span>Barchasi</span>
+                  <em>{{ total_count }}</em>
+                </label>
+              </li>
+              {% for cat, count in categories_with_counts %}
+              <li>
+                <label class="search-filter-check">
+                  <input type="radio" name="kategoriya" value="{{ cat.slug }}" {% if active_category == cat.slug %}checked{% endif %} onchange="this.form.submit()">
+                  <span>{{ cat.name }}</span>
+                  <em>{{ count }}</em>
+                </label>
+              </li>
+              {% endfor %}
+            </ul>
+
+            <h3>Muallif</h3>
+            <select name="muallif" onchange="this.form.submit()">
+              <option value="">Barchasi</option>
+              {% for author in authors %}
+              <option value="{{ author.slug }}" {% if active_author == author.slug %}selected{% endif %}>{{ author.name }}</option>
+              {% endfor %}
+            </select>
+
+            <h3>Nashr yili</h3>
+            <div class="search-filters__year">
+              <input type="number" name="yildan" value="{{ year_from }}" placeholder="Dan" min="1990" max="2030">
+              <input type="number" name="yilgacha" value="{{ year_to }}" placeholder="Gacha" min="1990" max="2030">
+            </div>
+            <button type="submit" class="btn btn--outline-dark btn--sm" style="width:100%;margin-top:8px">Qo'llash</button>
+
+            <h3>Format</h3>
+            <ul class="search-filters__list">
+              <li><label class="search-filter-check"><input type="radio" name="format" value="" {% if not active_format %}checked{% endif %} onchange="this.form.submit()"><span>Barcha formatlar</span></label></li>
+              <li><label class="search-filter-check"><input type="radio" name="format" value="kitob" {% if active_format == 'kitob' %}checked{% endif %} onchange="this.form.submit()"><span>Qog'oz kitob</span></label></li>
+              <li><label class="search-filter-check"><input type="radio" name="format" value="maqola" {% if active_format == 'maqola' %}checked{% endif %} onchange="this.form.submit()"><span>Maqola</span></label></li>
+              <li><label class="search-filter-check"><input type="radio" name="format" value="yangilik" {% if active_format == 'yangilik' %}checked{% endif %} onchange="this.form.submit()"><span>Yangilik</span></label></li>
+            </ul>
+
+            <a href="{% url 'core:search' %}?q={{ query }}" class="search-filters__clear">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              Filtrni tozalash
+            </a>
+          </form>
+        </div>
+      </aside>
+
+      <div class="search-results">
+        <div class="search-results__header">
+          <div class="search-tabs">
+            <a href="?q={{ query }}&tab=all{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if active_author %}&muallif={{ active_author }}{% endif %}{% if year_from %}&yildan={{ year_from }}{% endif %}{% if year_to %}&yilgacha={{ year_to }}{% endif %}{% if active_format %}&format={{ active_format }}{% endif %}" class="search-tabs__item {% if tab == 'all' %}active{% endif %}">
+              Barchasi <span class="search-tabs__count">{{ total_count }}</span>
+            </a>
+            <a href="?q={{ query }}&tab=books{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if active_author %}&muallif={{ active_author }}{% endif %}{% if year_from %}&yildan={{ year_from }}{% endif %}{% if year_to %}&yilgacha={{ year_to }}{% endif %}{% if active_format %}&format={{ active_format }}{% endif %}" class="search-tabs__item {% if tab == 'books' %}active{% endif %}">
+              Kitoblar <span class="search-tabs__count">{{ books_count }}</span>
+            </a>
+            <a href="?q={{ query }}&tab=articles{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if active_author %}&muallif={{ active_author }}{% endif %}{% if year_from %}&yildan={{ year_from }}{% endif %}{% if year_to %}&yilgacha={{ year_to }}{% endif %}{% if active_format %}&format={{ active_format }}{% endif %}" class="search-tabs__item {% if tab == 'articles' %}active{% endif %}">
+              Maqolalar <span class="search-tabs__count">{{ articles_count }}</span>
+            </a>
+            <a href="?q={{ query }}&tab=news{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if active_author %}&muallif={{ active_author }}{% endif %}{% if year_from %}&yildan={{ year_from }}{% endif %}{% if year_to %}&yilgacha={{ year_to }}{% endif %}{% if active_format %}&format={{ active_format }}{% endif %}" class="search-tabs__item {% if tab == 'news' %}active{% endif %}">
+              Yangiliklar <span class="search-tabs__count">{{ news_count }}</span>
+            </a>
+          </div>
+          <span class="search-results__count"><strong>{{ visible_count }}</strong> ta natija topildi</span>
+        </div>
+
+        <div class="search-results__list">
+          {% for item in results %}
+          <article class="search-result-card">
+            <a href="{{ item.url }}" class="search-result-card__img">
+              <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+            </a>
+            <div class="search-result-card__body">
+              <span class="tag tag--{{ item.type }}">{{ item.type_label }}</span>
+              <h3 class="search-result-card__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+              <p class="search-result-card__excerpt">{{ item.excerpt|truncatechars:160 }}</p>
+              <div class="search-result-card__meta">
+                <span>📅 {{ item.date|date:"d M Y" }}</span>
+                <span>👁 {{ item.views }}</span>
+                <span>{{ item.author }}</span>
+              </div>
+            </div>
+            <div class="search-result-card__action">
+              {% if item.type == 'kitob' %}
+              {% include 'partials/btn_batafsil.html' with url=item.url modifier='btn-batafsil--auto btn-batafsil--sm' %}
+              {% else %}
+              {% include 'partials/btn_batafsil.html' with url=item.url label="O'qish" modifier='btn-batafsil--auto btn-batafsil--sm' %}
+              {% endif %}
+            </div>
+          </article>
+          {% empty %}
+          <p class="empty-state">"{{ query }}" bo'yicha natija topilmadi. Boshqa kalit so'z bilan urinib ko'ring.</p>
+          {% endfor %}
+        </div>
+
+        {% if results.has_other_pages %}
+        <div class="pagination">
+          {% if results.has_previous %}
+          <a href="?q={{ query }}&tab={{ tab }}&page={{ results.previous_page_number }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}">‹</a>
+          {% endif %}
+          {% for num in results.paginator.page_range %}
+            {% if results.number == num %}
+              <span class="active">{{ num }}</span>
+            {% elif num > results.number|add:'-3' and num < results.number|add:'3' %}
+              <a href="?q={{ query }}&tab={{ tab }}&page={{ num }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
+          {% if results.has_next %}
+          <a href="?q={{ query }}&tab={{ tab }}&page={{ results.next_page_number }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}">›</a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <div class="search-empty">
+      <p>Qidirish uchun kalit so'z kiriting. Masalan: <a href="?q=islom+tarixi">islom tarixi</a></p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

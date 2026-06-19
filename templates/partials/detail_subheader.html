@@ -1,0 +1,23 @@
+<section class="page-hero page-hero--about page-hero--sub page-hero--detail">
+  <div class="container">
+    <nav class="breadcrumb page-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'core:home' %}">Bosh sahifa</a><span class="breadcrumb__sep">›</span>
+      {% if parent_name %}
+      <a href="{% url parent_name %}">{{ parent_label }}</a><span class="breadcrumb__sep">›</span>
+      {% else %}
+      <a href="{{ parent_url }}">{{ parent_label }}</a><span class="breadcrumb__sep">›</span>
+      {% endif %}
+      <span class="breadcrumb__current">{{ title|truncatechars:55 }}</span>
+    </nav>
+    <h1 class="page-hero__title">{{ title }}</h1>
+    {% if post %}
+    <p class="page-hero__subtitle">{{ post.category_display }} · {{ post.published_at|date:"d M Y" }} · {{ post.views }} ko'rish</p>
+    {% elif article %}
+    <p class="page-hero__subtitle">{{ article.author_name }} · {{ article.category_display }} · {{ article.published_at|date:"d M Y" }}</p>
+    {% elif book %}
+    <p class="page-hero__subtitle">{{ book.author.name }} · {{ book.category.name }} · {{ book.year }}</p>
+    {% elif subtitle %}
+    <p class="page-hero__subtitle">{{ subtitle }}</p>
+    {% endif %}
+  </div>
+</section>

@@ -1,0 +1,35 @@
+{% load static %}
+<header class="header header--dark" id="header">
+  <div class="container header__inner">
+    <a href="{% url 'core:home' %}" class="logo">
+      <span class="logo__wrap">
+        <img src="{% static 'images/logo.png' %}" alt="BUKHARA HAMD PRINT" class="logo__img">
+      </span>
+      <span class="logo__text">
+        <strong>BUKHARA HAMD PRINT</strong>
+        <small>nashriyoti</small>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="{% url 'core:home' %}" class="nav__link {% if request.resolver_match.url_name == 'home' and request.resolver_match.namespace == 'core' %}nav__link--active{% endif %}">Bosh sahifa</a>
+      <a href="{% url 'core:about' %}" class="nav__link {% if request.resolver_match.url_name == 'about' %}nav__link--active{% endif %}">Biz haqimizda</a>
+      <a href="{% url 'catalog:book_list' %}" class="nav__link {% if request.resolver_match.namespace == 'catalog' %}nav__link--active{% endif %}">Kitoblar</a>
+      <a href="{% url 'blog:list' %}" class="nav__link {% if request.resolver_match.url_name == 'list' %}nav__link--active{% endif %}">Yangiliklar</a>
+      <a href="{% url 'blog:article_list' %}" class="nav__link {% if 'article' in request.resolver_match.url_name %}nav__link--active{% endif %}">Maqolalar</a>
+      <a href="{% url 'core:contact' %}" class="nav__link {% if request.resolver_match.url_name == 'contact' %}nav__link--active{% endif %}">Aloqa</a>
+    </nav>
+
+    <div class="header__actions">
+      <a href="{% url 'core:search' %}" class="header__search header__search--link" aria-label="Qidiruv sahifasi">
+        <span class="header__search-text">Qidirish...</span>
+        <span class="header__search-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+      </a>
+      <button class="burger" id="burger" aria-label="Menyu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>

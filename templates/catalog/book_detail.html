@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+
+{% include 'partials/detail_subheader.html' with parent_label="Kitoblar" title=book.title book=book parent_name="catalog:book_list" %}
+
+
+
+<section class="page-content">
+
+  <div class="container">
+
+    <div class="book-page-card">
+
+      <div class="book-detail-mockup">
+
+        <div class="book-detail__left">
+
+          <div class="book-gallery">
+
+            <div class="book-gallery__main">
+
+              <img src="{{ book.cover_url }}" alt="{{ book.title }}" id="mainCover">
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="book-detail__center">
+
+          <div class="book-info__meta">
+
+            <div class="book-info__meta-item">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+
+              <div><span>Muallif</span><a href="{{ book.author.get_absolute_url }}">{{ book.author.name }}</a></div>
+
+            </div>
+
+            <div class="book-info__meta-item">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+
+              <div><span>Nashriyot</span><strong>{{ book.publisher }}</strong></div>
+
+            </div>
+
+            <div class="book-info__meta-item">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/></svg>
+
+              <div><span>Nashr yili</span><strong>{{ book.year }}</strong></div>
+
+            </div>
+
+            <div class="book-info__meta-item">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+
+              <div><span>Til</span><strong>{{ book.language }}</strong></div>
+
+            </div>
+
+            <div class="book-info__meta-item">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+
+              <div><span>Sahifalar</span><strong>{{ book.pages }}</strong></div>
+
+            </div>
+
+            <div class="book-info__meta-item">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+
+              <div><span>Format / Hajm</span><strong>{{ book.file_format }} · {{ book.file_size }}</strong></div>
+
+            </div>
+
+          </div>
+
+
+
+          {% if book.description %}
+
+          <div class="book-description-box">{{ book.description }}</div>
+
+          {% endif %}
+
+
+
+          <div class="book-actions-row">
+
+            {% if book.pdf_url %}
+
+            <a href="{{ book.pdf_url }}" class="btn btn--read-online" target="_blank" rel="noopener">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+
+              O'qish
+
+            </a>
+
+            <a href="{{ book.pdf_url }}" class="btn btn--download-pdf" target="_blank" rel="noopener" download>
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+
+              Yuklab olish (PDF)
+
+            </a>
+
+            {% endif %}
+
+            <button type="button" class="btn--share" id="shareBookBtn" data-url="{{ request.build_absolute_uri }}" data-title="{{ book.title }}">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="M15.41 6.51l-6.82 3.98"/></svg>
+
+              Ulashish
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <aside class="sidebar-books-wrap">
+          {% include 'partials/book_categories_sidebar.html' %}
+        </aside>
+
+      </div>
+
+    </div>
+
+
+
+    {% if related_books %}
+
+    <div class="similar-carousel">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+
+        <h2 class="section-title" style="margin:0">Shu kabi kitoblar</h2>
+
+        <div class="similar-carousel__nav">
+
+          <button type="button" class="similar-carousel__btn" id="similarPrev" aria-label="Oldingi">‹</button>
+
+          <button type="button" class="similar-carousel__btn" id="similarNext" aria-label="Keyingi">›</button>
+
+        </div>
+
+      </div>
+
+      <div class="similar-carousel__track" id="similarTrack">
+
+        {% for item in related_books %}
+
+        <div class="similar-book-card">
+
+          <a href="{{ item.get_absolute_url }}" class="similar-book-card__cover"><img src="{{ item.cover_url }}" alt="{{ item.title }}"></a>
+
+          <div class="similar-book-card__body">
+
+            <h3 class="similar-book-card__title"><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+
+            <p class="similar-book-card__meta">{{ item.author.name }}</p>
+
+            <p class="similar-book-card__meta">{{ item.download_count|floatformat:0 }} yuklab olish · {{ item.file_format }} {{ item.file_size }}</p>
+
+            {% include 'partials/btn_batafsil.html' with url=item.get_absolute_url modifier='btn-batafsil--auto btn-batafsil--sm' %}
+
+          </div>
+
+        </div>
+
+        {% endfor %}
+
+      </div>
+
+    </div>
+
+    {% endif %}
+
+  </div>
+
+</section>
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<script>
+
+document.getElementById('shareBookBtn')?.addEventListener('click', function() {
+
+  const url = this.dataset.url;
+
+  const title = this.dataset.title;
+
+  if (navigator.share) {
+
+    navigator.share({ title, url });
+
+  } else {
+
+    navigator.clipboard.writeText(url);
+
+    alert('Havola nusxalandi!');
+
+  }
+
+});
+
+const similarTrack = document.getElementById('similarTrack');
+
+document.getElementById('similarPrev')?.addEventListener('click', () => similarTrack?.scrollBy({ left: -320, behavior: 'smooth' }));
+
+document.getElementById('similarNext')?.addEventListener('click', () => similarTrack?.scrollBy({ left: 320, behavior: 'smooth' }));
+
+</script>
+
+{% endblock %}

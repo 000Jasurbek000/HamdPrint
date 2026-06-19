@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ author.name }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--compact">
+  <div class="container author-header">
+    {% if author.photo_url %}
+    <img src="{{ author.photo_url }}" alt="{{ author.name }}" class="author-header__photo">
+    {% endif %}
+    <div>
+      <h1 class="page-hero__title">{{ author.name }}</h1>
+      <p class="page-hero__subtitle">{{ author.bio }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-content">
+  <div class="container">
+    <h2 class="section-title">Kitoblari ({{ books.count }})</h2>
+    <div class="books-grid">
+      {% for book in books %}
+        {% include 'partials/book_card.html' with book=book %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

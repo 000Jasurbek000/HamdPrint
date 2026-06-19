@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}Yangiliklar{% endblock %}
+
+
+
+{% block content %}
+
+<section class="page-hero page-hero--about page-hero--sub">
+  <div class="container">
+    <nav class="breadcrumb page-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'core:home' %}">Bosh sahifa</a><span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__current">Yangiliklar</span>
+    </nav>
+    <div class="page-hero__row">
+    <div class="page-hero__content">
+      <h1 class="page-hero__title">Yangiliklar</h1>
+
+      <div class="page-hero__accent"></div>
+
+      <p class="page-hero__subtitle">BUKHARA HAMD PRINT so'nggi yangiliklari va e'lonlari</p>
+
+      <div class="page-hero__stats">
+        <div class="page-hero__stat-item">
+          <strong>{{ total_news }}+</strong>
+          <span>Jami yangiliklar</span>
+        </div>
+        <div class="page-hero__stat-item">
+          <strong>{{ total_news_views|floatformat:0 }}+</strong>
+          <span>Ko'rishlar</span>
+        </div>
+        <div class="page-hero__stat-item">
+          <strong>{{ total_news_categories }}+</strong>
+          <span>Kategoriyalar</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-hero__media">
+
+      {% include 'partials/page_hero_image.html' %}
+    </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="page-content">
+
+  <div class="container layout-with-sidebar">
+
+    <div class="layout-main">
+
+      <div class="filter-tabs">
+        <a href="{% url 'blog:list' %}" class="{% if not active_category %}active{% endif %}">Barchasi</a>
+        {% for cat in news_categories %}
+        <a href="?kategoriya={{ cat.slug }}" class="{% if active_category == cat.slug %}active{% endif %}">{{ cat.name }}</a>
+        {% endfor %}
+      </div>
+
+
+
+      {% for post in news_list %}
+
+      <article class="news-feed-card">
+
+        <a href="{{ post.get_absolute_url }}" class="news-feed-card__img">
+
+          <img src="{{ post.image_url }}" alt="{{ post.title }}" loading="lazy">
+
+        </a>
+
+        <div class="news-feed-card__body">
+
+          <span class="tag">{{ post.category_display }}</span>
+
+          <h2 class="news-feed-card__title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+
+          <p style="color:var(--gray-600);font-size:.9rem;line-height:1.6">{{ post.excerpt }}</p>
+
+          <div class="news-feed-card__meta">
+
+            <span>📅 {{ post.published_at|date:"d E Y" }}</span>
+
+            <span>👁 {{ post.views }}</span>
+
+          </div>
+
+          {% include 'partials/btn_batafsil.html' with url=post.get_absolute_url modifier='btn-batafsil--auto' %}
+
+        </div>
+
+      </article>
+
+      {% empty %}
+
+      <p class="empty-state">Yangiliklar topilmadi.</p>
+
+      {% endfor %}
+
+
+
+      {% if news_list.has_other_pages %}
+
+      <div class="pagination">
+
+        {% if news_list.has_previous %}<a href="?page={{ news_list.previous_page_number }}">‹</a>{% endif %}
+
+        <span class="active">{{ news_list.number }}</span>
+
+        {% if news_list.has_next %}<a href="?page={{ news_list.next_page_number }}">›</a>{% endif %}
+
+      </div>
+
+      {% endif %}
+
+    </div>
+
+
+
+    <aside>
+
+      <div class="sidebar-widget">
+
+        <h3>So'nggi yangiliklar</h3>
+
+        <div class="sidebar-latest sidebar-latest--boxed">
+
+        {% for item in latest_news %}
+
+        <div class="sidebar-latest__item">
+
+          <img src="{{ item.image_url }}" alt="">
+
+          <div>
+
+            <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+
+            <span>{{ item.published_at|date:"d M Y" }}</span>
+
+          </div>
+
+        </div>
+
+        {% endfor %}
+
+        </div>
+
+      </div>
+
+      {% include 'partials/sidebar_newsletter.html' %}
+
+    </aside>
+
+  </div>
+
+</section>
+
+{% endblock %}
+

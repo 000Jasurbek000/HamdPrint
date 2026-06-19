@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Mualliflar{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--compact">
+  <div class="container">
+    <h1 class="page-hero__title">Mualliflar</h1>
+    <p class="page-hero__subtitle">BUKHARA HAMD PRINT hamkor mualliflari</p>
+  </div>
+</section>
+
+<section class="page-content">
+  <div class="container">
+    <div class="authors-grid">
+      {% for author in authors %}
+      <a href="{{ author.get_absolute_url }}" class="author-card">
+        {% if author.photo_url %}
+        <img src="{{ author.photo_url }}" alt="{{ author.name }}" class="author-card__photo">
+        {% endif %}
+        <h3>{{ author.name }}</h3>
+        <p>{{ author.books.count }} ta kitob</p>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+
+{% include 'partials/detail_subheader.html' with parent_label="Yangiliklar" title=post.title post=post parent_name="blog:list" %}
+
+<section class="page-content">
+  <div class="container layout-with-sidebar layout-with-sidebar--detail">
+
+    <article class="content-detail detail-page-card">
+      <div class="content-detail__meta content-detail__meta--compact">
+        <span>⏱ {{ post.reading_time }} daqiqa o'qish</span>
+      </div>
+
+      <img src="{{ post.image_url }}" alt="{{ post.title }}" class="content-detail__image">
+
+      <div class="content-detail__body">{{ post.content|linebreaks }}</div>
+
+      <div class="share-row">
+        <span>Ulashish:</span>
+        <div class="share-row__icons">
+          <a href="https://t.me/share/url?url={{ request.build_absolute_uri|urlencode }}&text={{ post.title|urlencode }}" class="share-btn" target="_blank" rel="noopener" aria-label="Telegram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" class="share-btn" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <button type="button" class="share-btn" id="copyLinkBtn" aria-label="Havolani nusxalash"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+        </div>
+      </div>
+
+      <div class="content-nav">
+        {% if prev_post %}
+        <a href="{{ prev_post.get_absolute_url }}" class="content-nav__item">
+          <div class="content-nav__label">← Oldingi yangilik</div>
+          <div class="content-nav__title">{{ prev_post.title }}</div>
+        </a>
+        {% else %}<div></div>{% endif %}
+        {% if next_post %}
+        <a href="{{ next_post.get_absolute_url }}" class="content-nav__item content-nav__item--next">
+          <div class="content-nav__label">Keyingi yangilik →</div>
+          <div class="content-nav__title">{{ next_post.title }}</div>
+        </a>
+        {% endif %}
+      </div>
+    </article>
+
+    <aside class="detail-sidebar">
+      {% include 'partials/sidebar_boxed_list.html' with title="So'nggi yangiliklar" items=latest_news list_url="/yangiliklar/" list_link_text="Barcha yangiliklar →" media_items=True %}
+      {% include 'partials/sidebar_boxed_list.html' with title="So'nggi nashrlar" items=latest_books list_url="/kitoblar/" list_link_text="Barcha kitoblarni ko'rish →" %}
+      {% include 'partials/sidebar_newsletter.html' with title="Yangiliklardan xabardor bo'ling!" %}
+    </aside>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
+  navigator.clipboard.writeText(window.location.href);
+  alert('Havola nusxalandi!');
+});
+</script>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}page-home{% endblock %}
+{% block title %}Bosh sahifa{% endblock %}
+
+{% block content %}
+<section class="hero hero--home">
+  <div class="hero__bg"></div>
+  <div class="hero__overlay"></div>
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <p class="hero__eyebrow">
+        <span class="hero__eyebrow-line" aria-hidden="true"></span>
+        Ilm va ma'rifat yo'lida
+      </p>
+      <h1 class="hero__title">
+        Ilm va ma'rifat<br>
+        yo'lida <br>
+        <span class="text-gold">ishonchli</span><br>
+         hamrohingiz
+      </h1>
+      <p class="hero__subtitle">
+        Biz sizga sifatli, ishonchli va foydali kitoblarni taqdim etish orqali
+        ma'rifat yo'lida xizmat qilamiz.
+      </p>
+      <div class="hero__buttons">
+        <a href="{% url 'catalog:book_list' %}" class="btn btn--gold btn--hero">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Kitoblar bilan tanishish
+        </a>
+        <a href="{% url 'blog:article_list' %}" class="btn btn--ghost-gold btn--hero">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Maqolalarni o'qish
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero__bar">
+    <div class="container">
+      <div class="hero-stats-bar hero-stats-bar--home">
+        <div class="hero-stat-box">
+          <div class="hero-stat-box__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <div>
+            <strong>Sifatli nashrlar</strong>
+            <span>Eng sara va ishonchli manbalarni nashr etamiz.</span>
+          </div>
+        </div>
+        <div class="hero-stat-box">
+          <div class="hero-stat-box__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <div>
+            <strong>Ishonchli xizmat</strong>
+            <span>Har bir kitobimiz sifat kafolatiga ega.</span>
+          </div>
+        </div>
+        <div class="hero-stat-box">
+          <div class="hero-stat-box__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <strong>Ma'rifatga hissa</strong>
+            <span>Ilm va ma'rifat tarqalishiga o'z hissamizni qo'shamiz.</span>
+          </div>
+        </div>
+        <div class="hero-stat-box">
+          <div class="hero-stat-box__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+          </div>
+          <div>
+            <strong>Onlayn o'qish</strong>
+            <span>Kitoblarni bepul onlayn o'qing va PDF yuklab oling.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include 'partials/home_sections.html' %}
+{% endblock %}

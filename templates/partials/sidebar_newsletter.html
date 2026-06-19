@@ -1,0 +1,12 @@
+<aside class="sidebar-widget sidebar-widget--newsletter">
+  <div class="sidebar-widget__icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+  </div>
+  <h3>{{ title|default:"Yangiliklardan xabardor bo'ling!" }}</h3>
+  <p>{{ subtitle|default:"Email manzilingizni qoldiring" }}</p>
+  <form method="post" action="{% url 'core:newsletter' %}">
+    {% csrf_token %}
+    <input type="email" name="email" placeholder="Email manzilingiz" required>
+    <button type="submit" class="btn btn--gold btn--sm">Obuna bo'lish</button>
+  </form>
+</aside>

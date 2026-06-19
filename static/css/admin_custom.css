@@ -1,0 +1,39 @@
+/* BUKHARA HAMD PRINT — Jazzmin admin theme */
+:root {
+  --hamd-navy: #0a1628;
+  --hamd-gold: #c9a227;
+}
+
+.main-sidebar,
+.sidebar-dark-primary {
+  background-color: var(--hamd-navy) !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active:hover {
+  background-color: var(--hamd-gold) !important;
+  color: var(--hamd-navy) !important;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--hamd-gold) !important;
+  border-color: var(--hamd-gold) !important;
+  color: var(--hamd-navy) !important;
+}
+
+.login-logo img,
+.brand-image {
+  max-height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-link {
+  border-bottom: 2px solid rgba(201, 162, 39, 0.35) !important;
+}
+
+.card-primary.card-outline {
+  border-top-color: var(--hamd-gold) !important;
+}

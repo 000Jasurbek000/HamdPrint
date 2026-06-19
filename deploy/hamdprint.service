@@ -1,0 +1,18 @@
+[Unit]
+Description=HAMDPRINT Django (Gunicorn)
+After=network.target postgresql.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/hamdprint
+EnvironmentFile=/var/www/hamdprint/.env
+ExecStart=/var/www/hamdprint/venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/var/www/hamdprint/hamdprint.sock \
+    config.wsgi:application
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

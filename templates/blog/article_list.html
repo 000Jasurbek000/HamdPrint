@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Maqolalar{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--about page-hero--sub">
+  <div class="container">
+    <nav class="breadcrumb page-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'core:home' %}">Bosh sahifa</a><span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__current">Maqolalar</span>
+    </nav>
+    <div class="page-hero__row">
+      <div class="page-hero__content">
+        <h1 class="page-hero__title">Maqolalar</h1>
+        <div class="page-hero__accent"></div>
+        <p class="page-hero__subtitle">Ilm, ma'rifat, tarbiya va ijtimoiy hayotga oid foydali maqolalar to'plami</p>
+        <div class="page-hero__stats">
+          <div class="page-hero__stat-item">
+            <strong>{{ total_articles }}+</strong>
+            <span>Jami maqolalar</span>
+          </div>
+          <div class="page-hero__stat-item">
+            <strong>{{ total_article_authors }}+</strong>
+            <span>Mualliflar</span>
+          </div>
+          <div class="page-hero__stat-item">
+            <strong>{{ total_article_views|floatformat:0 }}+</strong>
+            <span>Ko'rishlar</span>
+          </div>
+        </div>
+      </div>
+      <div class="page-hero__media">
+        {% include 'partials/page_hero_image.html' %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-content articles-page">
+  <div class="container layout-sidebar-left layout-sidebar-left--articles">
+
+    <aside class="articles-sidebar">
+      <div class="catalog-sidebar">
+        <h3 class="catalog-sidebar__title">Kategoriyalar</h3>
+        <ul class="filter-list filter-list--icons">
+          <li>
+            <a href="{% url 'blog:article_list' %}{% if sort %}?sort={{ sort }}{% endif %}" class="filter-list__link {% if not active_category %}active{% endif %}">
+              <span class="filter-list__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              </span>
+              <span class="filter-list__name">Barchasi</span>
+              <span class="filter-list__count">{{ total_articles }}</span>
+            </a>
+          </li>
+          {% for item in category_items %}
+          <li>
+            <a href="?kategoriya={{ item.slug }}{% if sort %}&sort={{ sort }}{% endif %}" class="filter-list__link {% if active_category == item.slug %}active{% endif %}">
+              <span class="filter-list__icon">{% include 'partials/article_category_icon.html' %}</span>
+              <span class="filter-list__name">{{ item.label }}</span>
+              <span class="filter-list__count">{{ item.count }}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </aside>
+
+    <div class="articles-main">
+      <div class="catalog-toolbar">
+        <div class="filter-tabs">
+          <a href="{% url 'blog:article_list' %}{% if active_category %}?kategoriya={{ active_category }}{% endif %}" class="{% if not sort %}active{% endif %}">Barchasi</a>
+          <a href="?sort=popular{% if active_category %}&kategoriya={{ active_category }}{% endif %}" class="{% if sort == 'popular' %}active{% endif %}">Ommabop</a>
+          <a href="?sort=newest{% if active_category %}&kategoriya={{ active_category }}{% endif %}" class="{% if sort == 'newest' %}active{% endif %}">So'nggi maqolalar</a>
+          <a href="?sort=views{% if active_category %}&kategoriya={{ active_category }}{% endif %}" class="{% if sort == 'views' %}active{% endif %}">Ko'p o'qilganlar</a>
+        </div>
+        <form method="get" class="catalog-sort">
+          {% if active_category %}<input type="hidden" name="kategoriya" value="{{ active_category }}">{% endif %}
+          <select name="sort" onchange="this.form.submit()">
+            <option value="" {% if not sort %}selected{% endif %}>Sanaga ko'ra (yangi)</option>
+            <option value="popular" {% if sort == 'popular' %}selected{% endif %}>Ommabop</option>
+            <option value="views" {% if sort == 'views' %}selected{% endif %}>Ko'rishlar bo'yicha</option>
+          </select>
+        </form>
+      </div>
+
+      <div class="article-grid article-grid--page">
+        {% for article in articles %}
+        <article class="article-card-v2">
+          <a href="{{ article.get_absolute_url }}" class="article-card-v2__img">
+            <img src="{{ article.image_url }}" alt="{{ article.title }}" loading="lazy">
+          </a>
+          <div class="article-card-v2__body">
+            <span class="article-card-v2__tag">{{ article.category_display }}</span>
+            <h3 class="article-card-v2__title"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
+            <p class="article-card-v2__excerpt">{{ article.excerpt }}</p>
+            <div class="article-card-v2__meta">
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+                {{ article.published_at|date:"d M Y" }}
+              </span>
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                {{ article.views_display }}
+              </span>
+            </div>
+            {% include 'partials/btn_batafsil.html' with url=article.get_absolute_url modifier='btn-batafsil--block btn-batafsil--sm' %}
+          </div>
+        </article>
+        {% empty %}
+        <p class="empty-state articles-empty">Maqolalar topilmadi.</p>
+        {% endfor %}
+      </div>
+
+      {% if articles.has_other_pages %}
+      <div class="articles-pagination">
+        <div class="pagination pagination--square pagination--catalog">
+          {% if articles.has_previous %}
+          <a href="?page={{ articles.previous_page_number }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="pagination__nav">‹ Oldingi</a>
+          {% else %}
+          <span class="pagination__nav pagination__nav--disabled">‹ Oldingi</span>
+          {% endif %}
+          {% for num in articles.paginator.page_range %}
+            {% if articles.number == num %}
+              <span class="active">{{ num }}</span>
+            {% elif num > articles.number|add:'-3' and num < articles.number|add:'3' %}
+              <a href="?page={{ num }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
+          {% if articles.has_next %}
+          <a href="?page={{ articles.next_page_number }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="pagination__nav">Keyingi ›</a>
+          {% else %}
+          <span class="pagination__nav pagination__nav--disabled">Keyingi ›</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

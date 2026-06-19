@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Kitoblar{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--about page-hero--sub">
+  <div class="container">
+    <nav class="breadcrumb page-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'core:home' %}">Bosh sahifa</a><span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__current">Kitoblar</span>
+    </nav>
+    <div class="page-hero__row">
+      <div class="page-hero__content">
+        <h1 class="page-hero__title">Kitoblar</h1>
+        <div class="page-hero__accent"></div>
+        <p class="page-hero__subtitle">Monografiyalar, darsliklar, o'quv qo'llanmalar va badiiy adabiyotlar to'plami</p>
+        <div class="page-hero__stats">
+          <div class="page-hero__stat-item">
+            <strong>{{ total_books }}+</strong>
+            <span>Jami kitoblar</span>
+          </div>
+          <div class="page-hero__stat-item">
+            <strong>{{ total_books }}+</strong>
+            <span>Nashrlar</span>
+          </div>
+          <div class="page-hero__stat-item">
+            <strong>{{ total_authors }}+</strong>
+            <span>Mualliflar</span>
+          </div>
+          <div class="page-hero__stat-item">
+            <strong>{{ total_downloads|floatformat:0 }}+</strong>
+            <span>Yuklab olishlar</span>
+          </div>
+        </div>
+      </div>
+      <div class="page-hero__media">
+        {% include 'partials/page_hero_image.html' %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="books-page">
+  <div class="container">
+    <div class="catalog-layout">
+
+      {% include 'partials/book_categories_sidebar.html' %}
+
+      <div class="catalog-main">
+        <div class="catalog-books-box">
+          <div class="catalog-toolbar">
+            <span class="catalog-result">Natija: <strong>{{ books_count }}</strong> ta kitob</span>
+            <form class="catalog-sort" method="get">
+              {% if active_category %}<input type="hidden" name="kategoriya" value="{{ active_category }}">{% endif %}
+              {% if lang %}<input type="hidden" name="til" value="{{ lang }}">{% endif %}
+              {% if file_format %}<input type="hidden" name="format" value="{{ file_format }}">{% endif %}
+              <label for="bookSort">Saralash</label>
+              <select id="bookSort" name="sort" onchange="this.form.submit()">
+                <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Yangi kelganlar</option>
+                <option value="title" {% if sort == 'title' %}selected{% endif %}>Nomi bo'yicha</option>
+                <option value="popular" {% if sort == 'popular' %}selected{% endif %}>Ommabop</option>
+              </select>
+            </form>
+          </div>
+
+          <div class="books-grid books-grid--catalog">
+            {% for book in books %}
+            <article class="book-card-catalog">
+              <a href="{{ book.get_absolute_url }}" class="book-card-catalog__cover">
+                <img src="{{ book.cover_url }}" alt="{{ book.title }}" loading="lazy">
+              </a>
+              <div class="book-card-catalog__body">
+                <h3 class="book-card-catalog__title"><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>
+                <p class="book-card-catalog__author">{{ book.author.name }}</p>
+                <p class="book-card-catalog__category">{{ book.category.name }}</p>
+                {% include 'partials/btn_batafsil.html' with url=book.get_absolute_url modifier='btn-batafsil--block' %}
+              </div>
+            </article>
+            {% empty %}
+            <p class="empty-state">Kitoblar topilmadi.</p>
+            {% endfor %}
+          </div>
+
+          {% if books.has_other_pages %}
+          <div class="catalog-books-box__footer">
+            <div class="pagination pagination--square pagination--catalog">
+              {% if books.has_previous %}
+              <a href="?page={{ books.previous_page_number }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if lang %}&til={{ lang }}{% endif %}{% if file_format %}&format={{ file_format }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="pagination__nav">‹ Oldingi</a>
+              {% else %}
+              <span class="pagination__nav pagination__nav--disabled">‹ Oldingi</span>
+              {% endif %}
+              {% for num in books.paginator.page_range %}
+                {% if books.number == num %}
+                  <span class="active">{{ num }}</span>
+                {% elif num > books.number|add:'-3' and num < books.number|add:'3' %}
+                  <a href="?page={{ num }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if lang %}&til={{ lang }}{% endif %}{% if file_format %}&format={{ file_format }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{{ num }}</a>
+                {% endif %}
+              {% endfor %}
+              {% if books.has_next %}
+              <a href="?page={{ books.next_page_number }}{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if lang %}&til={{ lang }}{% endif %}{% if file_format %}&format={{ file_format }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="pagination__nav">Keyingi ›</a>
+              {% else %}
+              <span class="pagination__nav pagination__nav--disabled">Keyingi ›</span>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

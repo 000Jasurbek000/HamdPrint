@@ -1,0 +1,26 @@
+<section class="page-hero {{ modifier|default:'' }}">
+  <div class="container {% if image_url %}page-hero__row{% endif %}">
+    <div class="page-hero__content">
+      {% if breadcrumbs %}
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        {% for item in breadcrumbs %}
+          {% if item.url %}
+            <a href="{{ item.url }}">{{ item.label }}</a><span class="breadcrumb__sep">›</span>
+          {% else %}
+            <span class="breadcrumb__current">{{ item.label }}</span>
+          {% endif %}
+        {% endfor %}
+      </nav>
+      {% endif %}
+      <h1 class="page-hero__title">{{ title }}</h1>
+      <div class="page-hero__accent"></div>
+      {% if subtitle %}<p class="page-hero__subtitle">{{ subtitle }}</p>{% endif %}
+      {% if extra %}{{ extra|safe }}{% endif %}
+    </div>
+    {% if image_url %}
+    <div class="page-hero__media">
+      <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=900&h=420&fit=crop" alt="" class="page-hero__image page-hero__image--fade" loading="lazy">
+    </div>
+    {% endif %}
+  </div>
+</section>

@@ -1,0 +1,36 @@
+{% comment %}
+Unified page subheader. Usage:
+{% include 'partials/page_subheader.html' with hero_modifier='page-hero--books' title='Kitoblar' subtitle='...' image_url='...' image_round=True %}
+Optional: hero_extra for stats bar etc.
+{% endcomment %}
+<section class="page-hero {{ hero_modifier|default:'' }}">
+  <div class="container">
+    <nav class="breadcrumb page-hero__breadcrumb" aria-label="Breadcrumb">
+      {% if breadcrumb_items %}
+        {% for item in breadcrumb_items %}
+          {% if item.url %}
+            <a href="{{ item.url }}">{{ item.label }}</a><span class="breadcrumb__sep">›</span>
+          {% else %}
+            <span class="breadcrumb__current">{{ item.label }}</span>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <a href="{% url 'core:home' %}">Bosh sahifa</a><span class="breadcrumb__sep">›</span>
+        <span class="breadcrumb__current">{{ title }}</span>
+      {% endif %}
+    </nav>
+    <div class="page-hero__row{% if not image_url %} page-hero__row--single{% endif %}">
+      <div class="page-hero__content">
+        <h1 class="page-hero__title"{% if title_size %} style="font-size:{{ title_size }}"{% endif %}>{{ title }}</h1>
+        <div class="page-hero__accent"></div>
+        {% if subtitle %}<p class="page-hero__subtitle">{{ subtitle }}</p>{% endif %}
+        {% if hero_extra %}{{ hero_extra|safe }}{% endif %}
+      </div>
+      {% if image_url %}
+      <div class="page-hero__media">
+        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=900&h=420&fit=crop" alt="" class="page-hero__image page-hero__image--fade" loading="lazy">
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>

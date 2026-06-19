@@ -1,0 +1,42 @@
+<aside class="catalog-sidebar catalog-sidebar--books">
+  <h3 class="catalog-sidebar__title">Kategoriyalar</h3>
+  <ul class="filter-list">
+    <li>
+      <a href="{% url 'catalog:book_list' %}" class="filter-list__link {% if not active_category %}active{% endif %}">
+        <span class="filter-list__name">Barchasi</span>
+        <span class="filter-list__count">{{ total_books }}</span>
+      </a>
+    </li>
+    {% for cat in categories %}
+    <li>
+      <a href="?kategoriya={{ cat.slug }}{% if sort %}&sort={{ sort }}{% endif %}{% if lang %}&til={{ lang }}{% endif %}{% if file_format %}&format={{ file_format }}{% endif %}" class="filter-list__link {% if active_category == cat.slug %}active{% endif %}">
+        <span class="filter-list__name">{{ cat.name }}</span>
+        <span class="filter-list__count">{{ cat.book_count }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <h3 class="catalog-sidebar__title catalog-sidebar__title--sub">Filtrlash</h3>
+  <form method="get" class="filter-form filter-form--books" id="bookFilterForm">
+    {% if active_category %}<input type="hidden" name="kategoriya" value="{{ active_category }}">{% endif %}
+    {% if sort %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
+    <label class="filter-form__label">Til</label>
+    <select name="til" class="filter-form__select">
+      <option value="">Barchasi</option>
+      <option value="O'zbekcha" {% if lang == "O'zbekcha" %}selected{% endif %}>O'zbekcha</option>
+      <option value="Ruscha" {% if lang == 'Ruscha' %}selected{% endif %}>Ruscha</option>
+      <option value="Arabcha" {% if lang == 'Arabcha' %}selected{% endif %}>Arabcha</option>
+    </select>
+    <label class="filter-form__label">Format</label>
+    <div class="filter-form__checks">
+      <label class="filter-form__check"><input type="radio" name="format" value="" {% if not file_format %}checked{% endif %}> Barchasi</label>
+      <label class="filter-form__check"><input type="radio" name="format" value="PDF" {% if file_format == 'PDF' %}checked{% endif %}> PDF</label>
+      <label class="filter-form__check"><input type="radio" name="format" value="EPUB" {% if file_format == 'EPUB' %}checked{% endif %}> EPUB</label>
+    </div>
+    <button type="submit" class="filter-form__apply">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+      Qo'llash
+    </button>
+  </form>
+</aside>
