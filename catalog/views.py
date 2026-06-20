@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.http import FileResponse, Http404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q, Sum
+import mimetypes
 
 from .models import Book, BookCategory, Author
 
@@ -64,6 +66,37 @@ def book_detail(request, slug):
         'active_category': book.category.slug,
         'total_books': Book.objects.count(),
     })
+
+
+def book_pdf(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    if book.pdf_file:
+        try:
+            content_type = mimetypes.guess_type(book.pdf_file.name)[0] or 'application/pdf'
+            response = FileResponse(
+                book.pdf_file.open('rb'),
+                content_type=content_type,
+                filename=f'{book.slug}.pdf',
+            )
+            if request.GET.get('download'):
+                response['Content-Disposition'] = f'attachment; filename="{book.slug}.pdf"'
+            return response
+        except FileNotFoundError:
+            raise Http404('PDF fayl topilmadi')
+    if book.pdf_url:
+        return redirect(book.pdf_link)
+    raise Http404('PDF mavjud emas')
+
+
+def book_cover(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    if not book.cover:
+        raise Http404('Muqova topilmadi')
+    try:
+        content_type = mimetypes.guess_type(book.cover.name)[0] or 'image/jpeg'
+        return FileResponse(book.cover.open('rb'), content_type=content_type)
+    except FileNotFoundError:
+        raise Http404('Muqova fayli topilmadi')
 
 
 def category_books(request, slug):

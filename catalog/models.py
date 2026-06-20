@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 
+from .utils import book_cover_upload_path, book_pdf_upload_path, normalize_media_url
+
 
 class BookCategory(models.Model):
     name = models.CharField(
@@ -111,7 +113,7 @@ class Book(models.Model):
     )
     cover = models.ImageField(
         'Muqova fayli',
-        upload_to='books/covers/',
+        upload_to=book_cover_upload_path,
         blank=True,
         help_text='Kompyuterdan muqova rasmini yuklang (ixtiyoriy)',
     )
@@ -155,7 +157,7 @@ class Book(models.Model):
     )
     pdf_file = models.FileField(
         'PDF fayl',
-        upload_to='books/pdf/',
+        upload_to=book_pdf_upload_path,
         blank=True,
         help_text='Kompyuterdan PDF fayl yuklang (ixtiyoriy)',
     )
@@ -203,17 +205,30 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('catalog:book_detail', kwargs={'slug': self.slug})
 
+    def save(self, *args, **kwargs):
+        if self.pdf_file and self.pdf_url and '/media/' in self.pdf_url:
+            self.pdf_url = ''
+        if self.cover and self.cover_url and '/media/' in self.cover_url:
+            self.cover_url = ''
+        super().save(*args, **kwargs)
+
     @property
     def cover_src(self):
         if self.cover:
-            return self.cover.url
+            return reverse('catalog:book_cover', kwargs={'slug': self.slug})
         return self.cover_url or ''
 
     @property
-    def pdf_src(self):
+    def pdf_link(self):
         if self.pdf_file:
-            return self.pdf_file.url
-        return self.pdf_url or ''
+            return reverse('catalog:book_pdf', kwargs={'slug': self.slug})
+        if self.pdf_url:
+            return normalize_media_url(self.pdf_url)
+        return ''
+
+    @property
+    def pdf_src(self):
+        return self.pdf_link
 
     @property
     def has_pdf(self):

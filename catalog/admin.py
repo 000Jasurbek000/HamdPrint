@@ -70,8 +70,8 @@ class BookAdmin(admin.ModelAdmin):
             'fields': ('publisher', 'year', 'pages', 'language', 'file_format', 'file_size'),
         }),
         ('PDF', {
-            'description': 'Havola yoki fayl — ikkisidan biri yetarli. O\'qish va yuklab olish shu manbadan.',
-            'fields': ('pdf_url', 'pdf_file'),
+            'description': 'Fayl yuklang yoki tashqi havola kiriting. Fayl yuklasangiz, PDF havola maydonini bo\'sh qoldiring.',
+            'fields': ('pdf_file', 'pdf_url'),
         }),
         ('Qo\'shimcha', {
             'classes': ('collapse',),
