@@ -105,8 +105,15 @@ class Book(models.Model):
         help_text='Kitob qaysi kategoriyaga tegishli',
     )
     cover_url = models.URLField(
-        'Muqova rasmi',
-        help_text='Kitob muqovasi rasm URL manzili',
+        'Muqova havolasi',
+        blank=True,
+        help_text='Muqova rasmi uchun tashqi URL (ixtiyoriy)',
+    )
+    cover = models.ImageField(
+        'Muqova fayli',
+        upload_to='books/covers/',
+        blank=True,
+        help_text='Kompyuterdan muqova rasmini yuklang (ixtiyoriy)',
     )
     description = models.TextField(
         'Tavsif',
@@ -144,12 +151,13 @@ class Book(models.Model):
     pdf_url = models.URLField(
         'PDF havola',
         blank=True,
-        help_text='PDF yuklab olish uchun to\'g\'ridan-to\'g\'ri havola',
+        help_text='PDF uchun tashqi URL havola (ixtiyoriy)',
     )
-    read_online_url = models.URLField(
-        'Onlayn o\'qish havolasi',
+    pdf_file = models.FileField(
+        'PDF fayl',
+        upload_to='books/pdf/',
         blank=True,
-        help_text='Brauzerda o\'qish uchun havola (ixtiyoriy)',
+        help_text='Kompyuterdan PDF fayl yuklang (ixtiyoriy)',
     )
     table_of_contents = models.TextField(
         'Mundarija',
@@ -196,6 +204,26 @@ class Book(models.Model):
         return reverse('catalog:book_detail', kwargs={'slug': self.slug})
 
     @property
+    def cover_src(self):
+        if self.cover:
+            return self.cover.url
+        return self.cover_url or ''
+
+    @property
+    def pdf_src(self):
+        if self.pdf_file:
+            return self.pdf_file.url
+        return self.pdf_url or ''
+
+    @property
+    def has_pdf(self):
+        return bool(self.pdf_file or self.pdf_url)
+
+    @property
+    def has_cover(self):
+        return bool(self.cover or self.cover_url)
+
+    @property
     def chapters(self):
         if not self.table_of_contents:
             return []
@@ -209,4 +237,4 @@ class Book(models.Model):
 
     @property
     def read_url(self):
-        return self.read_online_url or self.get_absolute_url()
+        return self.pdf_src or self.get_absolute_url()

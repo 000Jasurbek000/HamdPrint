@@ -4,11 +4,11 @@
     {% for item in items %}
     <li>
       <a href="{{ item.get_absolute_url }}" class="sidebar-books__link">
-        <img src="{% if item.cover_url %}{{ item.cover_url }}{% else %}{{ item.image_url }}{% endif %}" alt="{{ item.title }}" loading="lazy">
+        <img src="{% firstof item.cover_src item.image_url %}" alt="{{ item.title }}" loading="lazy">
         <div>
           <strong>{{ item.title }}</strong>
           <small>
-            {% if item.cover_url %}
+            {% if item.file_format %}
               {{ item.download_count|floatformat:0 }} marta yuklab olingan · {{ item.file_format }} {{ item.file_size }}
             {% elif item.author_name %}
               {{ item.author_name }} · {{ item.published_at|date:"d M Y" }}

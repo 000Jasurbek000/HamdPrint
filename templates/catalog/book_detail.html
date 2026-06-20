@@ -22,7 +22,7 @@
 
             <div class="book-gallery__main">
 
-              <img src="{{ book.cover_url }}" alt="{{ book.title }}" id="mainCover">
+              <img src="{{ book.cover_src }}" alt="{{ book.title }}" id="mainCover">
 
             </div>
 
@@ -98,9 +98,9 @@
 
           <div class="book-actions-row">
 
-            {% if book.pdf_url %}
+            {% if book.has_pdf %}
 
-            <a href="{{ book.pdf_url }}" class="btn btn--read-online" target="_blank" rel="noopener">
+            <a href="{{ book.pdf_src }}" class="btn btn--read-online" target="_blank" rel="noopener">
 
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
 
@@ -108,7 +108,7 @@
 
             </a>
 
-            <a href="{{ book.pdf_url }}" class="btn btn--download-pdf" target="_blank" rel="noopener" download>
+            <a href="{{ book.pdf_src }}" class="btn btn--download-pdf" target="_blank" rel="noopener" {% if book.pdf_file %}download{% endif %}>
 
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
 
@@ -118,7 +118,7 @@
 
             {% endif %}
 
-            <button type="button" class="btn--share" id="shareBookBtn" data-url="{{ request.build_absolute_uri }}" data-title="{{ book.title }}">
+            <button type="button" class="btn--share" id="shareBookBtn" data-url="{{ request.scheme }}://{{ request.get_host }}{{ book.get_absolute_url }}" data-title="{{ book.title }}">
 
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="M15.41 6.51l-6.82 3.98"/></svg>
 
@@ -166,7 +166,7 @@
 
         <div class="similar-book-card">
 
-          <a href="{{ item.get_absolute_url }}" class="similar-book-card__cover"><img src="{{ item.cover_url }}" alt="{{ item.title }}"></a>
+          <a href="{{ item.get_absolute_url }}" class="similar-book-card__cover"><img src="{{ item.cover_src }}" alt="{{ item.title }}"></a>
 
           <div class="similar-book-card__body">
 
@@ -202,21 +202,23 @@
 
 <script>
 
-document.getElementById('shareBookBtn')?.addEventListener('click', function() {
+document.getElementById('shareBookBtn')?.addEventListener('click', async function() {
 
   const url = this.dataset.url;
 
-  const title = this.dataset.title;
+  try {
 
-  if (navigator.share) {
+    await navigator.clipboard.writeText(url);
 
-    navigator.share({ title, url });
+    const original = this.innerHTML;
 
-  } else {
+    this.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Nusxalandi!';
 
-    navigator.clipboard.writeText(url);
+    setTimeout(() => { this.innerHTML = original; }, 2000);
 
-    alert('Havola nusxalandi!');
+  } catch (e) {
+
+    prompt('Kitob havolasini nusxalang:', url);
 
   }
 

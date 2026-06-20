@@ -3,12 +3,23 @@ set -euo pipefail
 
 APP_DIR="/var/www/hamdprint"
 VENV_DIR="$APP_DIR/venv"
-USER="www-data"
+ENV_FILE="$APP_DIR/.env"
+ENV_BACKUP="/tmp/hamdprint.env.backup"
 
 cd "$APP_DIR"
 
-echo "==> Git yangilanish"
+echo "==> .env zaxirasi (server sozlamalari saqlanadi)"
+if [ -f "$ENV_FILE" ]; then
+  cp "$ENV_FILE" "$ENV_BACKUP"
+fi
+
+echo "==> Git yangilanish (faqat kod, .env o'zgarmaydi)"
 git pull origin main
+
+if [ -f "$ENV_BACKUP" ]; then
+  cp "$ENV_BACKUP" "$ENV_FILE"
+  echo "    .env tiklandi"
+fi
 
 echo "==> Virtual muhit va paketlar"
 source "$VENV_DIR/bin/activate"

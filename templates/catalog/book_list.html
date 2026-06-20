@@ -68,7 +68,7 @@
             {% for book in books %}
             <article class="book-card-catalog">
               <a href="{{ book.get_absolute_url }}" class="book-card-catalog__cover">
-                <img src="{{ book.cover_url }}" alt="{{ book.title }}" loading="lazy">
+                <img src="{{ book.cover_src }}" alt="{{ book.title }}" loading="lazy">
               </a>
               <div class="book-card-catalog__body">
                 <h3 class="book-card-catalog__title"><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>

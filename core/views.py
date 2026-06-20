@@ -84,7 +84,7 @@ def _build_search_results(books_qs, articles_qs, news_qs, tab):
                 'type_label': 'Kitob',
                 'title': book.title,
                 'excerpt': book.description[:200] if book.description else '',
-                'image': book.cover_url,
+                'image': book.cover_src,
                 'url': book.get_absolute_url(),
                 'date': book.created_at,
                 'views': book.views,

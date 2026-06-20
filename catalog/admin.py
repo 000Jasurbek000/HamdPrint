@@ -60,14 +60,18 @@ class BookAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Asosiy', {
             'description': 'Kitobning asosiy ma\'lumotlari. Muallif va kategoriya oldindan yaratilgan bo\'lishi kerak.',
-            'fields': ('title', 'slug', 'author', 'category', 'cover_url', 'description'),
+            'fields': ('title', 'slug', 'author', 'category', 'description'),
+        }),
+        ('Muqova', {
+            'description': 'Havola yoki fayl — ikkisidan biri yetarli.',
+            'fields': ('cover_url', 'cover'),
         }),
         ('Nashr ma\'lumotlari', {
             'fields': ('publisher', 'year', 'pages', 'language', 'file_format', 'file_size'),
         }),
-        ('Fayllar', {
-            'description': 'PDF yoki onlayn o\'qish havolalarini kiriting.',
-            'fields': ('pdf_url', 'read_online_url'),
+        ('PDF', {
+            'description': 'Havola yoki fayl — ikkisidan biri yetarli. O\'qish va yuklab olish shu manbadan.',
+            'fields': ('pdf_url', 'pdf_file'),
         }),
         ('Qo\'shimcha', {
             'classes': ('collapse',),
