@@ -5,6 +5,7 @@ from django.db.models import Q, Sum
 import mimetypes
 
 from .models import Book, BookCategory, Author
+from .utils import normalize_media_url
 
 
 def get_book_categories():
@@ -60,6 +61,7 @@ def book_detail(request, slug):
     other_books = Book.objects.exclude(pk=book.pk).order_by('-download_count')[:5]
     return render(request, 'catalog/book_detail.html', {
         'book': book,
+        'book_share_url': book.get_share_url(request),
         'related_books': related,
         'other_books': other_books,
         'categories': get_book_categories(),
@@ -82,9 +84,12 @@ def book_pdf(request, slug):
                 response['Content-Disposition'] = f'attachment; filename="{book.slug}.pdf"'
             return response
         except FileNotFoundError:
-            raise Http404('PDF fayl topilmadi')
+            pass
     if book.pdf_url:
-        return redirect(book.pdf_link)
+        target = normalize_media_url(book.pdf_url)
+        if target.startswith('/'):
+            return redirect(target)
+        return redirect(book.pdf_url)
     raise Http404('PDF mavjud emas')
 
 

@@ -206,11 +206,18 @@ class Book(models.Model):
         return reverse('catalog:book_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        if self.pdf_file and self.pdf_url and '/media/' in self.pdf_url:
-            self.pdf_url = ''
-        if self.cover and self.cover_url and '/media/' in self.cover_url:
-            self.cover_url = ''
+        if self.pdf_url:
+            self.pdf_url = normalize_media_url(self.pdf_url)
+            if self.pdf_file and '/media/' in self.pdf_url:
+                self.pdf_url = ''
+        if self.cover_url:
+            self.cover_url = normalize_media_url(self.cover_url)
+            if self.cover and '/media/' in self.cover_url:
+                self.cover_url = ''
         super().save(*args, **kwargs)
+
+    def get_share_url(self, request):
+        return request.build_absolute_uri(self.get_absolute_url())
 
     @property
     def cover_src(self):
@@ -220,10 +227,8 @@ class Book(models.Model):
 
     @property
     def pdf_link(self):
-        if self.pdf_file:
+        if self.has_pdf:
             return reverse('catalog:book_pdf', kwargs={'slug': self.slug})
-        if self.pdf_url:
-            return normalize_media_url(self.pdf_url)
         return ''
 
     @property

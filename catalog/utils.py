@@ -19,17 +19,15 @@ def normalize_media_url(url):
         return ''
     url = unquote(url.strip())
     if url.startswith(('http://', 'https://')):
-        return url
+        parsed = urlparse(url)
+        url = parsed.path or url
 
-    parsed = urlparse(url)
-    if parsed.scheme:
-        url = parsed.path
+    while 'media/books/pdf/' in url[1:]:
+        url = '/media/books/pdf/' + url.split('media/books/pdf/')[-1]
+    while 'media/books/covers/' in url[1:]:
+        url = '/media/books/covers/' + url.split('media/books/covers/')[-1]
 
     url = re.sub(r'/+', '/', url)
-    if 'media/books/pdf/' in url:
-        url = '/media/books/pdf/' + url.split('media/books/pdf/')[-1]
-    elif 'media/books/covers/' in url:
-        url = '/media/books/covers/' + url.split('media/books/covers/')[-1]
-    elif not url.startswith('/'):
+    if not url.startswith('/'):
         url = '/' + url
     return url
