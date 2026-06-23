@@ -3,15 +3,11 @@ from django.core.paginator import Paginator
 from django.db.models import Sum
 
 from catalog.models import Book
-from .models import NewsPost, Article, NewsCategory, ArticleCategory
+from .models import NewsPost, NewsCategory
 
 
 def get_news_categories():
     return NewsCategory.objects.filter(is_active=True).order_by('order', 'name')
-
-
-def get_article_categories():
-    return ArticleCategory.objects.filter(is_active=True).order_by('order', 'name')
 
 
 def news_list(request):
@@ -54,56 +50,5 @@ def news_detail(request, slug):
         'prev_post': prev_post,
         'next_post': next_post,
         'latest_news': NewsPost.objects.filter(is_published=True).exclude(pk=post.pk).order_by('-published_at')[:5],
-        'latest_books': Book.objects.order_by('-created_at')[:5],
-    })
-
-
-def article_list(request):
-    articles_qs = Article.objects.filter(is_published=True).select_related('category')
-    category_slug = request.GET.get('kategoriya', '')
-    sort = request.GET.get('sort', '')
-
-    if category_slug:
-        articles_qs = articles_qs.filter(category__slug=category_slug)
-    if sort in ('popular', 'views'):
-        articles_qs = articles_qs.order_by('-views')
-    else:
-        articles_qs = articles_qs.order_by('-published_at')
-
-    paginator = Paginator(articles_qs, 8)
-    page = paginator.get_page(request.GET.get('page'))
-
-    published_articles = Article.objects.filter(is_published=True)
-    category_items = [
-        {
-            'slug': cat.slug,
-            'label': cat.name,
-            'count': published_articles.filter(category=cat).count(),
-        }
-        for cat in get_article_categories()
-    ]
-    context = {
-        'articles': page,
-        'category_items': category_items,
-        'total_articles': published_articles.count(),
-        'total_article_views': published_articles.aggregate(total=Sum('views'))['total'] or 0,
-        'total_article_authors': published_articles.values('author_name').distinct().count(),
-        'active_category': category_slug,
-        'sort': sort,
-    }
-    return render(request, 'blog/article_list.html', context)
-
-
-def article_detail(request, slug):
-    article = get_object_or_404(Article.objects.select_related('category'), slug=slug, is_published=True)
-    Article.objects.filter(pk=article.pk).update(views=article.views + 1)
-    article.views += 1
-    prev_art = Article.objects.filter(is_published=True, published_at__lt=article.published_at).order_by('-published_at').first()
-    next_art = Article.objects.filter(is_published=True, published_at__gt=article.published_at).order_by('published_at').first()
-    return render(request, 'blog/article_detail.html', {
-        'article': article,
-        'prev_art': prev_art,
-        'next_art': next_art,
-        'latest_articles': Article.objects.filter(is_published=True).exclude(pk=article.pk).order_by('-published_at')[:5],
         'latest_books': Book.objects.order_by('-created_at')[:5],
     })

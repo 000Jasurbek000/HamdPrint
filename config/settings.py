@@ -161,7 +161,7 @@ JAZZMIN_SETTINGS = {
     'site_logo_classes': 'img-circle elevation-3',
     'welcome_sign': 'Admin panelga xush kelibsiz',
     'copyright': 'BUKHARA HAMD PRINT',
-    'search_model': ['catalog.Book', 'blog.NewsPost', 'blog.Article'],
+    'search_model': ['catalog.Book', 'blog.NewsPost'],
     'topmenu_links': [
         {'name': 'Bosh sahifa', 'url': 'admin:index', 'permissions': ['auth.view_user']},
         {'name': "Saytni ko'rish", 'url': '/', 'new_window': True},
@@ -185,9 +185,7 @@ JAZZMIN_SETTINGS = {
         'catalog.Book': 'fas fa-book',
         'blog': 'fas fa-newspaper',
         'blog.NewsCategory': 'fas fa-tags',
-        'blog.ArticleCategory': 'fas fa-bookmark',
         'blog.NewsPost': 'fas fa-bullhorn',
-        'blog.Article': 'fas fa-file-alt',
         'core': 'fas fa-cog',
         'core.Service': 'fas fa-concierge-bell',
         'core.HomeStatistic': 'fas fa-chart-bar',

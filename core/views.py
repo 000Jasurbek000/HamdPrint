@@ -6,8 +6,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
 from catalog.models import Book, BookCategory, Author
-from catalog.views import get_book_categories
-from blog.models import NewsPost, Article, ArticleCategory, NewsCategory
+from blog.models import NewsPost, NewsCategory
 from .models import ContactMessage, NewsletterSubscriber, Service
 from .home_page import get_home_categories_with_counts
 
@@ -75,7 +74,7 @@ def _sort_key(value):
     return 0.0
 
 
-def _build_search_results(books_qs, articles_qs, news_qs, tab):
+def _build_search_results(books_qs, news_qs, tab):
     results = []
     if tab in ('all', 'books'):
         for book in books_qs:
@@ -91,21 +90,6 @@ def _build_search_results(books_qs, articles_qs, news_qs, tab):
                 'author': book.author.name,
                 'category': book.category.name,
                 'sort_date': book.created_at,
-            })
-    if tab in ('all', 'articles'):
-        for article in articles_qs:
-            results.append({
-                'type': 'maqola',
-                'type_label': 'Maqola',
-                'title': article.title,
-                'excerpt': article.excerpt,
-                'image': article.image_url,
-                'url': article.get_absolute_url(),
-                'date': article.published_at,
-                'views': article.views,
-                'author': article.author_name,
-                'category': article.category_display,
-                'sort_date': article.published_at,
             })
     if tab in ('all', 'news'):
         for post in news_qs:
@@ -137,21 +121,15 @@ def search(request):
 
     if fmt == 'kitob':
         tab = 'books'
-    elif fmt == 'maqola':
-        tab = 'articles'
     elif fmt == 'yangilik':
         tab = 'news'
 
     books_qs = Book.objects.select_related('author', 'category')
-    articles_qs = Article.objects.filter(is_published=True).select_related('category')
     news_qs = NewsPost.objects.filter(is_published=True).select_related('category')
 
     if query:
         books_qs = books_qs.filter(
             Q(title__icontains=query) | Q(author__name__icontains=query) | Q(description__icontains=query)
-        )
-        articles_qs = articles_qs.filter(
-            Q(title__icontains=query) | Q(excerpt__icontains=query) | Q(author_name__icontains=query)
         )
         news_qs = news_qs.filter(
             Q(title__icontains=query) | Q(excerpt__icontains=query)
@@ -159,7 +137,6 @@ def search(request):
 
     if cat_slug:
         books_qs = books_qs.filter(category__slug=cat_slug)
-        articles_qs = articles_qs.filter(category__slug=cat_slug)
         news_qs = news_qs.filter(category__slug=cat_slug)
 
     if author_slug:
@@ -167,19 +144,16 @@ def search(request):
 
     if year_from and year_from.isdigit():
         books_qs = books_qs.filter(year__gte=int(year_from))
-        articles_qs = articles_qs.filter(published_at__year__gte=int(year_from))
         news_qs = news_qs.filter(published_at__year__gte=int(year_from))
     if year_to and year_to.isdigit():
         books_qs = books_qs.filter(year__lte=int(year_to))
-        articles_qs = articles_qs.filter(published_at__year__lte=int(year_to))
         news_qs = news_qs.filter(published_at__year__lte=int(year_to))
 
     books_count = books_qs.count()
-    articles_count = articles_qs.count()
     news_count = news_qs.count()
-    total_count = books_count + articles_count + news_count
+    total_count = books_count + news_count
 
-    results = _build_search_results(books_qs, articles_qs, news_qs, tab)
+    results = _build_search_results(books_qs, news_qs, tab)
     paginator = Paginator(results, 8)
     page = paginator.get_page(request.GET.get('page'))
 
@@ -211,8 +185,6 @@ def search(request):
 
     if tab == 'books':
         visible_count = books_count
-    elif tab == 'articles':
-        visible_count = articles_count
     elif tab == 'news':
         visible_count = news_count
     else:
@@ -226,7 +198,6 @@ def search(request):
         'visible_count': visible_count,
         'filter_params': params,
         'books_count': books_count,
-        'articles_count': articles_count,
         'news_count': news_count,
         'categories_with_counts': categories_with_counts,
         'categories': categories,

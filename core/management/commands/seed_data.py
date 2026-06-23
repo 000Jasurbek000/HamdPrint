@@ -7,5 +7,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.WARNING(
             'Bosh sahifa matnlari shablonda doimiy. '
-            'Kitoblar, yangiliklar va maqolalarni admin paneldan qo\'shing.'
+            'Kitoblar va yangiliklarni admin paneldan qo\'shing.'
         ))

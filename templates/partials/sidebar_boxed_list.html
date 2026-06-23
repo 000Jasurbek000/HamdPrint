@@ -9,7 +9,7 @@
           <strong>{{ item.title }}</strong>
           <small>
             {% if item.file_format %}
-              {{ item.download_count|floatformat:0 }} marta yuklab olingan · {{ item.file_format }} {{ item.file_size }}
+              {{ item.file_format }} {{ item.file_size }}
             {% elif item.author_name %}
               {{ item.author_name }} · {{ item.published_at|date:"d M Y" }}
             {% else %}

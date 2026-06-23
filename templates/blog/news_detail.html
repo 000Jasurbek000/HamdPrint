@@ -44,8 +44,10 @@
     </article>
 
     <aside class="detail-sidebar">
-      {% include 'partials/sidebar_boxed_list.html' with title="So'nggi yangiliklar" items=latest_news list_url="/yangiliklar/" list_link_text="Barcha yangiliklar →" media_items=True %}
-      {% include 'partials/sidebar_boxed_list.html' with title="So'nggi nashrlar" items=latest_books list_url="/kitoblar/" list_link_text="Barcha kitoblarni ko'rish →" %}
+      {% url 'blog:list' as news_list_url %}
+      {% include 'partials/sidebar_boxed_list.html' with title="So'nggi yangiliklar" items=latest_news list_url=news_list_url list_link_text="Barcha yangiliklar →" media_items=True %}
+      {% url 'catalog:book_list' as books_list_url %}
+      {% include 'partials/sidebar_boxed_list.html' with title="So'nggi nashrlar" items=latest_books list_url=books_list_url list_link_text="Barcha kitoblarni ko'rish →" %}
       {% include 'partials/sidebar_newsletter.html' with title="Yangiliklardan xabardor bo'ling!" %}
     </aside>
 

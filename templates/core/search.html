@@ -25,7 +25,7 @@
 <section class="search-main">
   <div class="container">
     <form class="search-bar-large" method="get" action="{% url 'core:search' %}">
-      <input type="text" name="q" value="{{ query }}" placeholder="Kitob, maqola yoki yangilik qidiring..." class="search-bar-large__input" autofocus>
+      <input type="text" name="q" value="{{ query }}" placeholder="Kitob yoki yangilik qidiring..." class="search-bar-large__input" autofocus>
       <button type="submit" class="search-bar-large__btn">Qidirish</button>
       {% if active_category %}<input type="hidden" name="kategoriya" value="{{ active_category }}">{% endif %}
       {% if active_author %}<input type="hidden" name="muallif" value="{{ active_author }}">{% endif %}
@@ -78,7 +78,6 @@
             <ul class="search-filters__list">
               <li><label class="search-filter-check"><input type="radio" name="format" value="" {% if not active_format %}checked{% endif %} onchange="this.form.submit()"><span>Barcha formatlar</span></label></li>
               <li><label class="search-filter-check"><input type="radio" name="format" value="kitob" {% if active_format == 'kitob' %}checked{% endif %} onchange="this.form.submit()"><span>Qog'oz kitob</span></label></li>
-              <li><label class="search-filter-check"><input type="radio" name="format" value="maqola" {% if active_format == 'maqola' %}checked{% endif %} onchange="this.form.submit()"><span>Maqola</span></label></li>
               <li><label class="search-filter-check"><input type="radio" name="format" value="yangilik" {% if active_format == 'yangilik' %}checked{% endif %} onchange="this.form.submit()"><span>Yangilik</span></label></li>
             </ul>
 
@@ -98,9 +97,6 @@
             </a>
             <a href="?q={{ query }}&tab=books{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if active_author %}&muallif={{ active_author }}{% endif %}{% if year_from %}&yildan={{ year_from }}{% endif %}{% if year_to %}&yilgacha={{ year_to }}{% endif %}{% if active_format %}&format={{ active_format }}{% endif %}" class="search-tabs__item {% if tab == 'books' %}active{% endif %}">
               Kitoblar <span class="search-tabs__count">{{ books_count }}</span>
-            </a>
-            <a href="?q={{ query }}&tab=articles{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if active_author %}&muallif={{ active_author }}{% endif %}{% if year_from %}&yildan={{ year_from }}{% endif %}{% if year_to %}&yilgacha={{ year_to }}{% endif %}{% if active_format %}&format={{ active_format }}{% endif %}" class="search-tabs__item {% if tab == 'articles' %}active{% endif %}">
-              Maqolalar <span class="search-tabs__count">{{ articles_count }}</span>
             </a>
             <a href="?q={{ query }}&tab=news{% if active_category %}&kategoriya={{ active_category }}{% endif %}{% if active_author %}&muallif={{ active_author }}{% endif %}{% if year_from %}&yildan={{ year_from }}{% endif %}{% if year_to %}&yilgacha={{ year_to }}{% endif %}{% if active_format %}&format={{ active_format }}{% endif %}" class="search-tabs__item {% if tab == 'news' %}active{% endif %}">
               Yangiliklar <span class="search-tabs__count">{{ news_count }}</span>

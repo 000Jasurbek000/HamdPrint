@@ -1,7 +1,7 @@
 from django.http import FileResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
-from django.db.models import Q, Sum
+from django.db.models import Q
 import mimetypes
 
 from .models import Book, BookCategory, Author
@@ -29,13 +29,11 @@ def book_list(request):
     if file_format:
         books = books.filter(file_format__iexact=file_format)
 
-    sort_map = {'newest': '-created_at', 'title': 'title', 'year': '-year', 'popular': '-download_count'}
+    sort_map = {'newest': '-created_at', 'title': 'title', 'year': '-year', 'popular': '-views'}
     books = books.order_by(sort_map.get(sort, '-created_at'))
 
     paginator = Paginator(books, 12)
     page = paginator.get_page(request.GET.get('page'))
-
-    total_downloads = Book.objects.aggregate(total=Sum('download_count'))['total'] or 0
 
     context = {
         'books': page,
@@ -48,7 +46,6 @@ def book_list(request):
         'file_format': file_format,
         'total_books': Book.objects.count(),
         'total_authors': Author.objects.count(),
-        'total_downloads': total_downloads,
     }
     return render(request, 'catalog/book_list.html', context)
 
@@ -58,7 +55,7 @@ def book_detail(request, slug):
     Book.objects.filter(pk=book.pk).update(views=book.views + 1)
     book.views += 1
     related = Book.objects.filter(category=book.category).exclude(pk=book.pk)[:6]
-    other_books = Book.objects.exclude(pk=book.pk).order_by('-download_count')[:5]
+    other_books = Book.objects.exclude(pk=book.pk).order_by('-views')[:5]
     return render(request, 'catalog/book_detail.html', {
         'book': book,
         'book_share_url': book.get_share_url(request),

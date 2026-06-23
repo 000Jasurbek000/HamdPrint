@@ -16,7 +16,7 @@
       <a href="{% url 'core:about' %}" class="nav__link {% if request.resolver_match.url_name == 'about' %}nav__link--active{% endif %}">Biz haqimizda</a>
       <a href="{% url 'catalog:book_list' %}" class="nav__link {% if request.resolver_match.namespace == 'catalog' %}nav__link--active{% endif %}">Kitoblar</a>
       <a href="{% url 'blog:list' %}" class="nav__link {% if request.resolver_match.url_name == 'list' %}nav__link--active{% endif %}">Yangiliklar</a>
-      <a href="{% url 'blog:article_list' %}" class="nav__link {% if 'article' in request.resolver_match.url_name %}nav__link--active{% endif %}">Maqolalar</a>
+      <a href="{{ journal_url }}" class="nav__link" target="_blank" rel="noopener">Jurnalimiz</a>
       <a href="{% url 'core:contact' %}" class="nav__link {% if request.resolver_match.url_name == 'contact' %}nav__link--active{% endif %}">Aloqa</a>
     </nav>
 

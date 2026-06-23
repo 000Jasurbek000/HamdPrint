@@ -8,3 +8,5 @@ CONTACT_INFO = {
     'working_hours': 'Har kuni: 9:00 — 18:00',
     'organization': 'BUKHARA HAMD PRINT',
 }
+
+JOURNAL_URL = 'https://lifelonglearning.uz/'

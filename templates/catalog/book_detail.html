@@ -173,8 +173,7 @@
             <h3 class="similar-book-card__title"><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
 
             <p class="similar-book-card__meta">{{ item.author.name }}</p>
-
-            <p class="similar-book-card__meta">{{ item.download_count|floatformat:0 }} yuklab olish · {{ item.file_format }} {{ item.file_size }}</p>
+            <p class="similar-book-card__meta">{{ item.file_format }} {{ item.file_size }}</p>
 
             {% include 'partials/btn_batafsil.html' with url=item.get_absolute_url modifier='btn-batafsil--auto btn-batafsil--sm' %}
 

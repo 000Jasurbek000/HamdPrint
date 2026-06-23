@@ -12,8 +12,6 @@
     <h1 class="page-hero__title">{{ title }}</h1>
     {% if post %}
     <p class="page-hero__subtitle">{{ post.category_display }} · {{ post.published_at|date:"d M Y" }} · {{ post.views }} ko'rish</p>
-    {% elif article %}
-    <p class="page-hero__subtitle">{{ article.author_name }} · {{ article.category_display }} · {{ article.published_at|date:"d M Y" }}</p>
     {% elif book %}
     <p class="page-hero__subtitle">{{ book.author.name }} · {{ book.category.name }} · {{ book.year }}</p>
     {% elif subtitle %}
