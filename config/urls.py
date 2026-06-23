@@ -18,3 +18,8 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+
+handler400 = 'core.error_views.bad_request'
+handler403 = 'core.error_views.permission_denied'
+handler404 = 'core.error_views.page_not_found'
+handler500 = 'core.error_views.server_error'

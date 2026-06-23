@@ -9,11 +9,15 @@ def site_context(request):
         and request.resolver_match.url_name == 'home'
         and request.resolver_match.namespace == 'core'
     )
+    try:
+        book_categories = get_book_categories()
+    except Exception:
+        book_categories = []
     return {
         'site_name': 'BUKHARA HAMD PRINT',
         'contact': CONTACT_INFO,
         'is_home': is_home,
-        'book_categories': get_book_categories(),
+        'book_categories': book_categories,
         'home_index_categories': HOME_INDEX_CATEGORIES,
         'journal_url': JOURNAL_URL,
     }
