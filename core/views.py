@@ -3,6 +3,7 @@ from datetime import datetime, date
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from catalog.models import Book, BookCategory, Author
@@ -209,3 +210,14 @@ def search(request):
         'active_format': fmt,
     }
     return render(request, 'core/search.html', context)
+
+
+def robots_txt(request):
+    content = """User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /account/
+Disallow: /subscribe/
+"""
+    return HttpResponse(content, content_type='text/plain')

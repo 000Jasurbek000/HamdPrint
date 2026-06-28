@@ -3,11 +3,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from core.views import robots_txt
+
 admin.site.site_header = 'BUKHARA HAMD PRINT — Admin panel'
 admin.site.site_title = 'HAMD PRINT Admin'
 admin.site.index_title = 'Kitoblar va yangiliklarni boshqaring'
 
 urlpatterns = [
+    path('robots.txt', robots_txt, name='robots_txt'),
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('books/', include('catalog.urls')),
