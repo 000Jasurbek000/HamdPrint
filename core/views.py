@@ -213,11 +213,26 @@ def search(request):
 
 
 def robots_txt(request):
-    content = """User-agent: *
-Allow: /
+    sitemap_url = request.build_absolute_uri('/sitemap.xml')
+    host = request.get_host().split(':')[0]
+    content = f"""# BUKHARA HAMD PRINT — {host}
 
+User-agent: *
+Allow: /
 Disallow: /admin/
 Disallow: /account/
 Disallow: /subscribe/
+Disallow: /search?
+Disallow: /books/book/*/pdf/
+Disallow: /books/book/*/cover/
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+Host: {host}
+
+Sitemap: {sitemap_url}
 """
     return HttpResponse(content, content_type='text/plain')
